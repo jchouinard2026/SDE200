@@ -1,0 +1,67 @@
+import javafx.application.Application;
+import javafx.stage.Stage;
+import javafx.scene.Scene;
+import javafx.scene.control.Slider;
+import javafx.geometry.Orientation;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
+
+public class SliderDemo extends Application {
+
+    @Override
+    public void start(Stage primaryStage) {
+
+        // Text to move
+        Text text = new Text(20, 20, "JavaFX Programming");
+
+        // --- Horizontal Slider ---
+        Slider sliderHorizontal = new Slider(0, 100, 0);
+        sliderHorizontal.setShowTickMarks(true);
+        sliderHorizontal.setShowTickLabels(true);
+        sliderHorizontal.setMajorTickUnit(20);
+        sliderHorizontal.setMinorTickCount(4);
+        sliderHorizontal.setBlockIncrement(5);
+
+        // --- Vertical Slider ---
+        Slider sliderVertical = new Slider(0, 100, 0);
+        sliderVertical.setOrientation(Orientation.VERTICAL); // KEY FIX
+        sliderVertical.setShowTickMarks(true);
+        sliderVertical.setShowTickLabels(true);
+        sliderVertical.setMajorTickUnit(20);
+        sliderVertical.setMinorTickCount(4);
+        sliderVertical.setBlockIncrement(5);
+
+        // Pane for text
+        Pane paneForText = new Pane();
+        paneForText.getChildren().add(text);
+
+        // Layout
+        BorderPane pane = new BorderPane();
+        pane.setCenter(paneForText);
+        pane.setBottom(sliderHorizontal);
+        pane.setRight(sliderVertical);
+
+        // Horizontal movement
+        sliderHorizontal.valueProperty().addListener(ov ->
+                text.setX(sliderHorizontal.getValue() *
+                        paneForText.getWidth() / sliderHorizontal.getMax())
+        );
+
+        // Vertical movement
+        sliderVertical.valueProperty().addListener(ov ->
+                text.setY(sliderVertical.getValue() *
+                        paneForText.getHeight() / sliderVertical.getMax())
+        );
+
+        // Scene and stage
+        Scene scene = new Scene(pane, 500, 200);
+        primaryStage.setTitle("Slider Demo with Vertical Orientation");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+}
